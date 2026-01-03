@@ -26,12 +26,14 @@ if generate:
         use_safetensors=True
     )
 
-    pipe = pipe.to("cuda")
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    pipe = pipe.to(device)
 
     st.write(f"**[PROMPT]**: {prompt}")
 
     # Generate image
-    with torch.autocast("cuda"):
-        image = pipe(prompt).images[0]
+    #with torch.autocast("cuda"):
+        #image = pipe(prompt).images[0]
+    image = pipe(prompt).images[0]
 
     st.image(image, caption="Generated Image", use_column_width=True)
